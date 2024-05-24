@@ -37,11 +37,11 @@ public class CartDTO {
             if (this.cart == null) {
                 this.cart = new HashMap<>();
             }
-            if (this.cart.containsKey(product.getSKU())) {
-                int currentQuantity = this.cart.get(product.getSKU()).getQuantity();
+            if (this.cart.containsKey(product.getMobileID())) {
+                int currentQuantity = this.cart.get(product.getMobileID()).getQuantity();
                 product.setQuantity(currentQuantity + product.getQuantity());
             }
-            this.cart.put(product.getSKU(), product);
+            this.cart.put(product.getMobileID(), product);
             check = true;
         } catch (Exception e) {
         }

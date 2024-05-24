@@ -19,11 +19,11 @@ import utils.DBUtils;
  */
 public class UserDAO {
     private static final String LOGIN="SELECT fullName, role FROM tbl_User WHERE userID=? AND password=? ";
-    private static final String SEARCH="SELECT userID, fullName, roleID FROM tbl_User WHERE fullName like ?";
+    private static final String SEARCH="SELECT userID, fullName, role FROM tbl_User WHERE fullName like ?";
     private static final String DELETE="DELETE tbl_User WHERE userID=?";
     private static final String UPDATE="UPDATE tbl_User SET fullName=?, roleID=? WHERE userID=?";
     private static final String CHECK_DUPLICATE="SELECT userID FROM tbl_User WHERE userID=?  ";
-    private static final String INSERT="INSERT INTO tbl_User(userId, fullName, roleID, password) "
+    private static final String INSERT="INSERT INTO tbl_User(userID, password,fullName, role) "
             + "                         VALUES(?,?,?,?)";
     
     public UserDTO checkLogin(String userID, String password) throws SQLException {
@@ -157,9 +157,9 @@ public class UserDAO {
             if(conn!= null){
                 ptm= conn.prepareStatement(INSERT);
                 ptm.setString(1, user.getUserID());
-                ptm.setString(2, user.getFullName());
-                ptm.setInt(3, user.getRoleID());
-                ptm.setString(4, user.getPassword());
+                ptm.setString(2, user.getPassword());
+                ptm.setString(3, user.getFullName());
+                ptm.setInt(4, user.getRoleID());               
                 checkInsert= ptm.executeUpdate()>0?true:false;
             }
         } catch (Exception e) {
@@ -179,9 +179,9 @@ public class UserDAO {
             if(conn!= null){
                 ptm= conn.prepareStatement(INSERT);
                 ptm.setString(1, user.getUserID());
-                ptm.setString(2, user.getFullName());
-                ptm.setInt(3, user.getRoleID());
-                ptm.setString(4, user.getPassword());
+                ptm.setString(2, user.getPassword());               
+                ptm.setString(3, user.getFullName());
+                ptm.setString(4,String.valueOf(user.getRoleID()));
                 checkInsert= ptm.executeUpdate()>0?true:false;
             }
         } finally{

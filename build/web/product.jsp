@@ -15,17 +15,16 @@
         <title>JSP Product</title>
     </head>
     <body>
-        <div class="flex-col">
             <div>
                 <form action="MainController" method="post">
-                    <table border="1" class="table">
+                    <table border="1">
                         <thead>
                             <tr>
-                                <th scope="col">mobileID</th>
-                                <th scope="col">mobileName</th>
-                                <th scope="col">Price</th>
-                                <th scope="col">description</th>
-                                <th scope="col">yearOfProduction</th>
+                                <th >mobileID</th>
+                                <th >mobileName</th>
+                                <th >Price</th>
+                                <th >description</th>
+                                <th >yearOfProduction</th>
                                 <th></th>
                             </tr>
                         </thead>
@@ -55,7 +54,6 @@
                         </c:forEach>
                         </tbody>
                     </table>  
-            </div
                 
             <div>
                 <form action="MainController" method="post">

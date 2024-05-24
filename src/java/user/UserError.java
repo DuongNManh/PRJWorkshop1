@@ -12,14 +12,14 @@ package user;
 public class UserError {
     private String userID;
     private String fullName;
-    private String roleID;
+    private String role;
     private String password;
     private String confirm;
 
     public UserError() {
         this.userID = "";
         this.fullName = "";
-        this.roleID = "";
+        this.role = "";
         this.password = "";
         this.confirm = "";
     }
@@ -27,7 +27,7 @@ public class UserError {
     public UserError(String userID, String fullName, String roleID, String password, String confirm) {
         this.userID = userID;
         this.fullName = fullName;
-        this.roleID = roleID;
+        this.role = roleID;
         this.password = password;
         this.confirm = confirm;
     }
@@ -49,11 +49,11 @@ public class UserError {
     }
 
     public String getRoleID() {
-        return roleID;
+        return role;
     }
 
     public void setRoleID(String roleID) {
-        this.roleID = roleID;
+        this.role = roleID;
     }
 
     public String getPassword() {

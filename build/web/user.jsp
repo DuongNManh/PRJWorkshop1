@@ -13,10 +13,10 @@
         <title>User Page</title>
     </head>
     <body>
-        <h1>Hello World!</h1>
+        <h1>Hello User!</h1>
         <% 
             UserDTO loginUser= (UserDTO)session.getAttribute("LOGIN_USER");
-            if(loginUser== null || !"US".equals(loginUser.getRoleID())){
+            if(loginUser== null || loginUser.getRoleID() != 0){
                 response.sendRedirect("login.jsp");
                 return;
             }

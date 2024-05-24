@@ -20,15 +20,12 @@ import user.*;
  *
  * @author Luu Minh Quan
  */
-@WebServlet(name = "LoginServlet", urlPatterns = {"/loginservlet"})
+@WebServlet(name = "LoginServlet", urlPatterns = {"/LoginServlet"})
 public class LoginServlet extends HttpServlet {
 
     private static final String ERROR = "login.jsp";
-    private static final String AD = "AD";
     private static final String ADMIN_PAGE = "admin.jsp";
-    private static final String US = "US";
     private static final String USER_PAGE = "product.jsp";
-    private static final String MN = "manager.jsp";
     private static final String MANAGER_PAGE = "manager.jsp";
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
@@ -57,16 +54,16 @@ public class LoginServlet extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        String url= ERROR;
+        String url = ERROR;
         try {
             String user = request.getParameter("user");
             String pass = request.getParameter("pass");
             UserDAO dao = new UserDAO();
-            UserDTO loginUser = dao.checkLogin(user, pass);           
+            UserDTO loginUser = dao.checkLogin(user, pass);
             String ms = "";
             // xac thuc trong database
             if (loginUser != null) {
-                System.out.println("user: "+loginUser.getUserID()+ " pass: "+loginUser.getPassword());
+                System.out.println("user: " + loginUser.getUserID() + " pass: " + loginUser.getPassword());
                 HttpSession session = request.getSession();
                 session.setAttribute("LOGIN_USER", loginUser);
 //              phan quyen
@@ -75,12 +72,12 @@ public class LoginServlet extends HttpServlet {
                     case 0:
                         url = ADMIN_PAGE;
                         break;
-                    case 1: 
+                    case 1:
                         url = MANAGER_PAGE;
                         break;
                     case 2:
                         url = USER_PAGE;
-                        break;                    
+                        break;
                     default:
                         request.setAttribute("ERROR", "Your role is not support!");
                         break;
@@ -96,7 +93,7 @@ public class LoginServlet extends HttpServlet {
             log("Error at LoginController: " + e.toString());
             request.setAttribute("error", "Internal server error");
             request.getRequestDispatcher("login.jsp").forward(request, response);
-        }finally{
+        } finally {
             request.getRequestDispatcher(url).forward(request, response);
         }
     }

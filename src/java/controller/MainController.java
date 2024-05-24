@@ -8,6 +8,7 @@ package controller;
 import java.io.IOException;
 import java.io.PrintWriter;
 import javax.servlet.ServletException;
+import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -16,32 +17,33 @@ import javax.servlet.http.HttpServletResponse;
  *
  * @author hd
  */
+@WebServlet(name = "MainController", urlPatterns = "/MainController")
 public class MainController extends HttpServlet {
 
     private static final String ERROR = "error.jsp";
 
     private static final String LOGIN = "Login";
-    private static final String LOGIN_CONTROLLER = "loginservlet";
+    private static final String LOGIN_CONTROLLER = "LoginServlet";
     private static final String REGISTER = "Register";
     private static final String REGISTER_CONTROLLER = "./register.jsp";
     private static final String SEARCH = "Search";
-    private static final String SEARCH_CONTROLLER = "SearchController";
+    private static final String SEARCH_CONTROLLER = "SearchServlet";
     private static final String DELETE = "Delete";
-    private static final String DELETE_CONTROLLER = "DeleteController";
+    private static final String DELETE_CONTROLLER = "DeleteServlet";
     private static final String UPDATE = "Update";
-    private static final String UPDATE_CONTROLLER = "UpdateController";
+    private static final String UPDATE_CONTROLLER = "UpdateServlet";
     private static final String LOGOUT = "Logout";
-    private static final String LOGOUT_CONTROLLER = "logoutservlet";
+    private static final String LOGOUT_CONTROLLER = "LogoutServlet";
     private static final String CREATE = "Create";
-    private static final String CREATE_CONTROLLER = "registerservlet";
+    private static final String CREATE_CONTROLLER = "RegisterServlet";
     private static final String ADD = "Add";
-    private static final String ADD_TO_CART_CONTROLLER = "addtocartservlet";
+    private static final String ADD_TO_CART_CONTROLLER = "AddtocartServlet";
     private static final String VIEW = "ViewCart";
     private static final String VIEW_CART = "viewCart.jsp";
     private static final String CHANGE = "Change";
-    private static final String CHANGE_CONTROLLER = "ChangeController";
+    private static final String CHANGE_CONTROLLER = "ChangeServlet";
     private static final String REMOVE = "Remove";
-    private static final String REMOVE_CONTROLLER = "RemoveController";
+    private static final String REMOVE_CONTROLLER = "RemoveServlet";
     private static final String PRODUCT = "ViewProduct";
     private static final String VIEW_PRODUCT = "ProductServlet";
 
@@ -49,40 +51,53 @@ public class MainController extends HttpServlet {
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
         String url = ERROR;
-        try {
+        try{
             String action = request.getParameter("action");
-            if (LOGIN.equals(action)) {
-                url = LOGIN_CONTROLLER;
-            } else if (REGISTER.equals(action)) {
-                url = REGISTER_CONTROLLER;
-            } else if (SEARCH.equals(action)) {
-                url = SEARCH_CONTROLLER;
-            } else if (DELETE.equals(action)) {
-                url = DELETE_CONTROLLER;
-            } else if (UPDATE.equals(action)) {
-                url = UPDATE_CONTROLLER;
-            } else if (LOGOUT.equals(action)) {
-                url = LOGOUT_CONTROLLER;
-            } else if (CREATE.equals(action)) {
-                url = CREATE_CONTROLLER;
-            } else if (ADD.equals(action)) {
-                url = ADD_TO_CART_CONTROLLER;
-            } else if (VIEW.equals(action)) {
-                url = VIEW_CART;
-            } else if (CHANGE.equals(action)) {
-                url = CHANGE_CONTROLLER;
-            } else if (REMOVE.equals(action)) {
-                url = REMOVE_CONTROLLER;
-            } else if (PRODUCT.equals(action)) {
-                url = VIEW_PRODUCT;
-            } else {
-                request.setAttribute("ERROR", "Your action not support");
+            switch (action) {
+                case LOGIN:
+                    url = LOGIN_CONTROLLER;
+                    break;
+                case REGISTER:
+                    url = REGISTER_CONTROLLER;
+                    break;
+                case SEARCH:
+                    url = SEARCH_CONTROLLER;
+                    break;
+                case DELETE:
+                    url = DELETE_CONTROLLER;
+                    break;
+                case UPDATE:
+                    url = UPDATE_CONTROLLER;
+                    break;
+                case LOGOUT:
+                    url = LOGOUT_CONTROLLER;
+                    break;
+                case CREATE:
+                    url = CREATE_CONTROLLER;
+                    break;
+                case ADD:
+                    url = ADD_TO_CART_CONTROLLER;
+                    break;
+                case VIEW:
+                    url = VIEW_CART;
+                    break;
+                case CHANGE:
+                    url = CHANGE_CONTROLLER;
+                    break;
+                case REMOVE:
+                    url = REMOVE_CONTROLLER;
+                    break;
+                case PRODUCT:
+                    url = VIEW_PRODUCT;
+                    break;
+                default:
+                    request.setAttribute("ERROR", "Action is not supported");
+                    break;
             }
         } catch (Exception e) {
-            log("Error at MainController: " + e.toString());
+            log("ERROR at MainController: " + e.getMessage());
         } finally {
             request.getRequestDispatcher(url).forward(request, response);
-
         }
 
     }

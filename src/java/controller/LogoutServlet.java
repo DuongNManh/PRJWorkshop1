@@ -18,25 +18,25 @@ import javax.servlet.http.HttpSession;
  *
  * @author hd
  */
-@WebServlet(name = "LogoutServlet", urlPatterns = {"/logoutservlet"})
+@WebServlet(name = "LogoutServlet", urlPatterns = {"/LogoutServlet"})
 public class LogoutServlet extends HttpServlet {
 
-    private static final String ERROR="login.jsp";
-    private static final String SUCCESS="login.jsp";
-    
+    private static final String ERROR = "login.jsp";
+    private static final String SUCCESS = "login.jsp";
+
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
-        String url= ERROR;
+        String url = ERROR;
         try {
-            HttpSession session= request.getSession(false);
-            if(session!= null){
+            HttpSession session = request.getSession(false);
+            if (session != null) {
                 session.invalidate();
-                url= SUCCESS;
+                url = SUCCESS;
             }
         } catch (Exception e) {
-            log("Error at LogoutController: "+ e.toString());
-        }finally{
+            log("Error at LogoutController: " + e.toString());
+        } finally {
             response.sendRedirect(url);
         }
     }

@@ -19,7 +19,7 @@ import user.UserError;
  *
  * @author lmao
  */
-@WebServlet(name = "RegisterServlet", urlPatterns = {"/registerservlet"})
+@WebServlet(name = "RegisterServlet", urlPatterns = {"/RegisterServlet"})
 public class RegisterServlet extends HttpServlet {
 
     /**

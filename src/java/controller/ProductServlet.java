@@ -27,6 +27,8 @@ import product.ProductDTO;
 @WebServlet(name = "ProductServlet", urlPatterns = "/ProductServlet")
 public class ProductServlet extends HttpServlet {
 
+    public static String url = "user.jsp";
+
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code> methods.
      *
@@ -38,17 +40,28 @@ public class ProductServlet extends HttpServlet {
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
-        try (PrintWriter out = response.getWriter()) {
-            /* TODO output your page here. You may use following sample code. */
-            out.println("<!DOCTYPE html>");
-            out.println("<html>");
-            out.println("<head>");
-            out.println("<title>Servlet ProductServlet</title>");
-            out.println("</head>");
-            out.println("<body>");
-            out.println("<h1>Servlet ProductServlet at " + request.getContextPath() + "</h1>");
-            out.println("</body>");
-            out.println("</html>");
+        // get value from database and set to request
+        int min, max;
+        ProductDAO dao = new ProductDAO();
+        List<ProductDTO> productList = null;
+        String rawMin = request.getParameter("min");
+        String rawMax = request.getParameter("max");
+        try {
+            if (rawMin == null || rawMax == null || rawMin.isEmpty() || rawMax.isEmpty()) {
+                productList = dao.getListProducts("");
+            } else {
+                try {
+                    min = Integer.parseInt(rawMin);
+                    max = Integer.parseInt(rawMax);
+                    productList = dao.getListProducts(min, max);
+                } catch (Exception e) {
+                    request.setAttribute("ERROR", "No products found");
+                }
+            }
+            request.setAttribute("products", productList);
+            request.getRequestDispatcher(url).forward(request, response);
+        } catch (SQLException ex) {
+            Logger.getLogger(ProductServlet.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
 
@@ -65,15 +78,7 @@ public class ProductServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        ProductDAO dao = new ProductDAO();
-        List<ProductDTO> productList;
-        try {
-            productList = dao.getListProducts("");
-            request.setAttribute("products", productList);
-            request.getRequestDispatcher("product.jsp").forward(request, response);
-        } catch (SQLException ex) {
-            Logger.getLogger(ProductServlet.class.getName()).log(Level.SEVERE, null, ex);
-        }
+        processRequest(request, response);
     }
 
     /**
@@ -87,18 +92,7 @@ public class ProductServlet extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-
-        // get value from database and set to request
-        ProductDAO dao = new ProductDAO();
-        List<ProductDTO> productList;
-        try {
-            productList = dao.getListProducts("");
-            request.setAttribute("products", productList);
-            request.getRequestDispatcher("product.jsp").forward(request, response);
-        } catch (SQLException ex) {
-            Logger.getLogger(ProductServlet.class.getName()).log(Level.SEVERE, null, ex);
-        }
-
+        processRequest(request, response);
     }
 
     /**
@@ -110,19 +104,18 @@ public class ProductServlet extends HttpServlet {
     public String getServletInfo() {
         return "Short description";
     }// </editor-fold>
-    
-    public static void main(String[] args) {
-        System.out.println("List of Product");
-        ProductDAO dao = new ProductDAO();
-        List<ProductDTO> productList;
-        try {
-            productList = dao.getListProducts("");
-            for (ProductDTO productDTO : productList) {
-                    System.out.println(productDTO.toString());
-                }
-        } catch (SQLException ex) {
-            Logger.getLogger(ProductServlet.class.getName()).log(Level.SEVERE, null, ex);
-        }  
-    }
-    
+
+//    public static void main(String[] args) {
+//        System.out.println("List of Product");
+//        ProductDAO dao = new ProductDAO();
+//        List<ProductDTO> productList;
+//        try {
+//            productList = dao.getListProducts("");
+//            for (ProductDTO productDTO : productList) {
+//                System.out.println(productDTO.toString());
+//            }
+//        } catch (SQLException ex) {
+//            Logger.getLogger(ProductServlet.class.getName()).log(Level.SEVERE, null, ex);
+//        }
+//    }
 }

@@ -10,7 +10,6 @@
 <!DOCTYPE html>
 <html>
     <head>
-        <link rel="stylesheet" href="css/table.css"/>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
         <title>Đồ Sơ Sinh Page</title>
     </head>
@@ -44,9 +43,9 @@
                 <tr>
                     <td><%= count++%></td>
                     <td> 
-                        <input type="text" name="id" value="<%= p.getSKU()%>" readonly=""/>
+                        <input type="text" name="id" value="<%= p.getMobileID()%>" readonly=""/>
                     </td>
-                    <td><%= p.getName()%></td>
+                    <td><%= p.getMobileName()%></td>
                     <td>
                         <input type="number" min="1" name="quantity" value="<%= p.getQuantity()%>" required=""/>
                     </td>

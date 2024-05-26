@@ -4,6 +4,7 @@
     Author     : hd
 --%>
 
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@page import="java.util.List"%>
 <%@page import="user.UserDTO"%>
 <%@page import="user.UserDAO"%>
@@ -11,8 +12,6 @@
 <!DOCTYPE html>
 <html>
     <head>
-        <link rel="stylesheet" href="css/table.css"/>
-        <link rel="stylesheet" href="css/util.css"/>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
         <title>Admin Page</title>
     </head>
@@ -28,89 +27,59 @@
                 search = "";
             }
         %>
-        Welcome: <h1><%= loginUser.getFullName()%></h1>
+
+        Welcome: <h1><%= loginUser.getFullName() %></h1>
         <form action="MainController" method="POST">
             <input type="submit" name="action" value="Logout"/>
         </form>
-        <form action="MainController">
-            Search<input type="text" name="search" value="<%= search%>"/>
+        <form action="MainController" method="post">
+            Search <input type="text" name="search" value="<%= search %>"/>
+            <select name="SearchBy">
+                <option value="ID">ID</option>
+                <option value="NAME">NAME</option>
+            </select>
             <input type="submit" name="action" value="Search"/>
-
         </form>
-        <%
-            List<UserDTO> listUser = (List) request.getAttribute("LIST_USER");
-            if (listUser != null) {
-                if (listUser.size() > 0) {
-        %>
-        <table border="1" class="container">
-            <thead>
-                <tr>
-                    <th>No</th>
-                    <th>User ID</th>
-                    <th>Full Name</th>
-                    <th>Role ID</th>
-                    <th>Password</th>
-                    <th>Delete</th>
-                    <th>Update</th>
-                </tr>
-            </thead>
-            <tbody>
-                <%
-                    int count = 1;
-                    for (UserDTO user : listUser) {
-                %>
-            <form action="MainController" method="POST">
-                <tr>
-                    <td><%= count++%></td>
-                    <td>
-                        <input type="text" name="userID" value="<%= user.getUserID()%>" readonly=""/>
-                    </td>
-                    <td>
-                        <input type="text" name="fullName" value="<%= user.getFullName()%>" required=""/>
-                    </td>
-                    <td>
-                        <input type="text" name="roleID" value="<%= user.getRoleID()%>" required=""/>
-                    </td>
-                    <td><%= user.getPassword()%></td>
-                    <!--detele o day ne-->
-                    <td>
-                        <a href="MainController?userID=<%= user.getUserID()%>&action=Delete&search=<%= search%>">Delete</a>
-                    </td>
-                    <!--update i day ne-->  
-                    <td>
-                        <input type="submit" name="action" value="Update"/>
-                        <input type="hidden" name="search" value="<%= search%>"/>
-                    </td>
-                </tr>
+        <div>
+            <form action="MainController" method="post">
+                <table border="1">
+                    <thead>
+                        <tr>
+                            <th>mobileID</th>
+                            <th>mobileName</th>
+                            <th>Price</th>
+                            <th>description</th>
+                            <th>yearOfProduction</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                    <c:forEach var="product" items="${LIST_PRODUCT}">
+                        <tr>
+                        <form action="MainController" method="post">
+                            <td>${product.getMobileID()}</td>
+                            <td>${product.getMobileName()}</td>
+                            <td>${product.getPrice()}</td>
+                            <td>${product.getDescription()}</td>
+                            <td>${product.getYearOfProduction()}</td>
+                            <td>
+                                <input type="submit" name="action" value="Delete">
+                            </td>
+                            <td>
+                                <input type="hidden" name="sku" value="${product.getMobileID()}">
+                                <input type="submit" name="action" value="Update">
+                            </td>
+                        </form>
+                        </tr>
+                    </c:forEach>
+                    </tbody>
+                </table>  
             </form>
-            <%
-                }
-            %>
-
-        </tbody>
-    </table>
-    <%
-        String success = (String) request.getAttribute("success");
-        if (success == null) {
-            success = "";
-        }
-    %>
-    <%= success%>
-    <%
-            
-        
-    %>
-    <%
-        String error = (String) request.getAttribute("ERROR");
-        if (error == null) {
-            error = "";
-        }
-    %>
-    <%= error%>
-    <%
-        }
-}
-    
-    %>
-</body>
+        </div>
+        <div>
+            <c:if test="${not empty ERROR}">
+                <p>Error: ${ERROR}</p>
+            </c:if>
+        </div>
+    </body>
 </html>
+

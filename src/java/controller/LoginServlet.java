@@ -25,7 +25,7 @@ public class LoginServlet extends HttpServlet {
 
     private static final String ERROR = "login.jsp";
     private static final String ADMIN_PAGE = "admin.jsp";
-    private static final String USER_PAGE = "product.jsp";
+    private static final String USER_PAGE = "user.jsp";
     private static final String MANAGER_PAGE = "manager.jsp";
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">

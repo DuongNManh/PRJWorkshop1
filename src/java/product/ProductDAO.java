@@ -23,6 +23,8 @@ import utils.DBUtils;
 public class ProductDAO {
 
     private static final String SEARCH = "SELECT * FROM MobileManagement.dbo.tbl_Mobile";
+    private static final String SEARCH_ID = "SELECT * FROM MobileManagement.dbo.tbl_Mobile WHERE (mobileID = ?)";
+    private static final String SEARCH_NAME = "SELECT * FROM MobileManagement.dbo.tbl_Mobile WHERE (mobileName = ?)";
 
     public List<ProductDTO> getListProducts(String search) throws SQLException {
         List<ProductDTO> list = new ArrayList<>();
@@ -42,9 +44,10 @@ public class ProductDAO {
                     int yearOfProduction = rs.getInt("yearOfProduction");
                     int Quantity = rs.getInt("Quantity");
                     int notSale = rs.getInt("noSale");
-                    list.add(new ProductDTO(mobileID, description, price, mobileName, yearOfProduction, Quantity,
-                            notSale));
+                    list.add(new ProductDTO(mobileID, description, price, mobileName, yearOfProduction,
+                            Quantity, notSale));
                 }
+
             }
         } catch (Exception e) {
             e.printStackTrace();
@@ -62,14 +65,12 @@ public class ProductDAO {
         return list;
     }
 
-    public List<ProductDTO> getListProducts(String min, String max) throws SQLException {
+    public List<ProductDTO> getListProducts(int min, int max) throws SQLException {
         List<ProductDTO> list = new ArrayList<>();
         Connection conn = null;
         PreparedStatement ptm = null;
         ResultSet rs = null;
         try {
-            int numMin = Integer.parseInt(min);
-            int numMax = Integer.parseInt(max);
             try {
                 conn = DBUtils.getConnection();
                 if (conn != null) {
@@ -83,7 +84,7 @@ public class ProductDAO {
                         int yearOfProduction = rs.getInt("yearOfProduction");
                         int Quantity = rs.getInt("Quantity");
                         int notSale = rs.getInt("noSale");
-                        if (price >= numMin && price <= numMax) {
+                        if (price >= min && price <= max) {
                             list.add(new ProductDTO(mobileID, description, price, mobileName, yearOfProduction,
                                     Quantity, notSale));
                         }
@@ -113,7 +114,7 @@ public class ProductDAO {
         ProductDAO dao = new ProductDAO();
         List<ProductDTO> productList;
         try {
-            productList = dao.getListProducts("100","300");
+            productList = dao.getListProducts("");
             for (ProductDTO productDTO : productList) {
                 System.out.println(productDTO.toString());
             }

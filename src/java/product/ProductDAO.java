@@ -25,6 +25,12 @@ public class ProductDAO {
     private static final String SEARCH = "SELECT * FROM MobileManagement.dbo.tbl_Mobile";
     private static final String SEARCH_ID = "SELECT * FROM MobileManagement.dbo.tbl_Mobile WHERE (mobileID like ?)";
     private static final String SEARCH_NAME = "SELECT * FROM MobileManagement.dbo.tbl_Mobile WHERE (mobileName like ?)";
+    private static final String DELETE = "DELETE MobileManagement.dbo.tbl_Mobile WHERE (mobileID = ?)";
+    private static final String UPDATE = "UPDATE MobileManagement.dbo.tbl_Mobile SET description=?, price=?,"
+            + " yearOfProduction=? , notSale=? WHERE userID=?";
+    private static final String CHECK_DUPLICATE = "SELECT mobileID FROM MobileManagement.dbo.tbl_Mobile WHERE mobileID=?  ";
+    private static final String INSERT = "INSERT INTO tbl_Mobile (mobileId, description, price, mobileName, yearOfProduction, quantity, noSale) "
+            + "                         VALUES(?,?,?,?,?,?,?)";
 
     public List<ProductDTO> getListProducts(String search) throws SQLException {
         List<ProductDTO> list = new ArrayList<>();

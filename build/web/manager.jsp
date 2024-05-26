@@ -62,11 +62,12 @@
                             <td>${product.getDescription()}</td>
                             <td>${product.getYearOfProduction()}</td>
                             <td>
-                                <input type="submit" name="action" value="Delete">
+                                <input type="hidden" name="sku" value="${product.getMobileID()}">
+                                <input type="submit" name="action" value="Update">
                             </td>
                             <td>
                                 <input type="hidden" name="sku" value="${product.getMobileID()}">
-                                <input type="submit" name="action" value="Update">
+                                <input type="submit" name="action" value="Delete">
                             </td>
                         </form>
                         </tr>

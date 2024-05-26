@@ -27,7 +27,7 @@ public class ProductDAO {
     private static final String SEARCH_NAME = "SELECT * FROM MobileManagement.dbo.tbl_Mobile WHERE (mobileName like ?)";
     private static final String DELETE = "DELETE MobileManagement.dbo.tbl_Mobile WHERE (mobileID = ?)";
     private static final String UPDATE = "UPDATE MobileManagement.dbo.tbl_Mobile SET description=?, price=?,"
-            + " yearOfProduction=? , notSale=? WHERE userID=?";
+            + " yearOfProduction=? , notSale=? WHERE mobileID=?";
     private static final String CHECK_DUPLICATE = "SELECT mobileID FROM MobileManagement.dbo.tbl_Mobile WHERE mobileID=?  ";
     private static final String INSERT = "INSERT INTO tbl_Mobile (mobileId, description, price, mobileName, yearOfProduction, quantity, noSale) "
             + "                         VALUES(?,?,?,?,?,?,?)";
@@ -158,6 +158,66 @@ public class ProductDAO {
             }
         }
         return list;
+    }
+
+    public boolean delete(String userID) throws SQLException {
+        boolean checkDelete = false;
+        Connection conn = null;
+        PreparedStatement ptm = null;
+        try {
+            conn = DBUtils.getConnection();
+            if (conn != null) {
+                ptm = conn.prepareStatement(DELETE);
+                ptm.setString(1, userID);
+                checkDelete = ptm.executeUpdate() > 0;
+            }
+        } catch (Exception e) {
+            // Log the exception
+            Logger.getLogger(getClass().getName()).log(Level.SEVERE, "Exception while deleting user", e);
+        } finally {
+            // Close resources
+            if (ptm != null) {
+                try {
+                    ptm.close();
+                } catch (SQLException e) {
+                    Logger.getLogger(getClass().getName()).log(Level.SEVERE, "Exception while closing PreparedStatement", e);
+                }
+            }
+            if (conn != null) {
+                try {
+                    conn.close();
+                } catch (SQLException e) {
+                    Logger.getLogger(getClass().getName()).log(Level.SEVERE, "Exception while closing Connection", e);
+                }
+            }
+        }
+        return checkDelete;
+    }
+
+    public boolean update(ProductDTO product) throws SQLException {
+        boolean checkUpdate = false;
+        Connection conn = null;
+        PreparedStatement ptm = null;
+        try {
+            conn = DBUtils.getConnection();
+            if (conn != null) {
+                ptm = conn.prepareStatement(UPDATE);
+                ptm.setString(1, product.getDescription());
+                ptm.setString(2, String.valueOf(product.getPrice()));
+                ptm.setString(3, String.valueOf(product.getYearOfProduction()));
+                ptm.setString(4, String.valueOf(product.getNotSale()));
+                checkUpdate = ptm.executeUpdate() > 0;
+            }
+        } catch (Exception e) {
+        } finally {
+            if (ptm != null) {
+                ptm.close();
+            }
+            if (conn != null) {
+                conn.close();
+            }
+        }
+        return checkUpdate;
     }
 
     public static void main(String[] args) {

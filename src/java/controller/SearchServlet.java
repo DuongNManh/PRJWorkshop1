@@ -33,8 +33,9 @@ public class SearchServlet extends HttpServlet {
         String url = ERROR;
         try {
             String search = request.getParameter("search");
+            String searchType = request.getParameter("SearchBy");
             ProductDAO dao = new ProductDAO();
-            List<ProductDTO> listProduct = dao.getListProducts(search);
+            List<ProductDTO> listProduct = dao.getListProducts(search, searchType);
             if (!listProduct.isEmpty()) {
                 request.setAttribute("LIST_PRODUCT", listProduct);
                 url = SUCCESS;

@@ -30,7 +30,6 @@
                             <input type="submit" name="action" value="Login"> <br />
                             <input type="reset" value="Reset"/> <br />
                             <input type="submit" name="action" value="Register"/>
-                            <button> <a href="ProductServlet">Click here to buy products</a></button>
                             <% String error = (String) request.getAttribute("error");
                                 if (error != null
                                         && !error.isEmpty()) {%>

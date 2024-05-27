@@ -13,7 +13,8 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
-import user.UserDAO;
+import product.ProductDAO;
+import product.ProductDTO;
 import user.UserDTO;
 
 /**
@@ -21,7 +22,7 @@ import user.UserDTO;
  * @author hd
  */
 @WebServlet(name = "UpdateServlet", urlPatterns = {"/UpdateServlet"})
-public class UpdateController extends HttpServlet {
+public class UpdateServlet extends HttpServlet {
 
     private static final String ERROR = "SearchServlet";
     private static final String SUCCESS = "SearchServlet";
@@ -30,36 +31,42 @@ public class UpdateController extends HttpServlet {
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
         String url = ERROR;
-        try {
-            String userID = request.getParameter("userID");
-            String fullName = request.getParameter("fullName");
-            String roleID = request.getParameter("roleID");
-            UserDTO user= new UserDTO(userID, fullName, roleID, "");
-            UserDAO dao = new UserDAO();
-            HttpSession session = request.getSession();
-            UserDTO loginUser = (UserDTO) session.getAttribute("LOGIN_USER");
-            if(loginUser.getUserID().equals(userID)){
-                loginUser.setFullName(fullName);
-                loginUser.setRoleID(roleID);
-                session.setAttribute("LOGIN_USER", loginUser);
-                
-            }
-            boolean checkUpdate = dao.update(user);
-            if (checkUpdate) {
-                request.setAttribute("success", "Update Success!");
-                url = SUCCESS;
-            } else {
-                request.setAttribute("ERROR", "Update fail!");
-            }
+        HttpSession session = request.getSession();
+        UserDTO loginUser = (UserDTO) session.getAttribute("LOGIN_USER");
 
-        } catch (Exception e) {
-            log("Error at UpdateController: " + e.toString());
-        } finally {
-            request.getRequestDispatcher(url).forward(request, response);
+        if (loginUser != null && loginUser.getRoleID() == 1) {
+            try {
+                String mobileID = request.getParameter("mobileID");
+                System.out.println("Updating product with mobileID: " + mobileID);
+                String mobileName = request.getParameter("mobileName");
+                System.out.println("Updating product with mobileName: " + mobileName);
+                float Price = Float.parseFloat(request.getParameter("Price"));
+                int quantity = Integer.parseInt(request.getParameter("quantity"));
+                String Description = request.getParameter("Description");
+                int notSale = Integer.parseInt(request.getParameter("notSale"));
+                int YearOfProduction = Integer.parseInt(request.getParameter("YearOfProduction"));
+                ProductDTO product = new ProductDTO(mobileID, Description, Price, mobileName, YearOfProduction, quantity, notSale);
+                ProductDAO productDAO = new ProductDAO();
+
+                boolean checkUpdate = productDAO.update(product);
+                if (checkUpdate) {
+                    System.out.println("update success!");
+                    request.setAttribute("SUCCESS", "Update Success!");
+                    url = SUCCESS;
+                } else {
+                    System.out.println("update fail!");
+                    request.setAttribute("ERROR", "Update fail!");
+                }
+
+            } catch (Exception e) {
+                log("Error at UpdateController: " + e.toString());
+            } finally {
+                request.getRequestDispatcher(url).forward(request, response);
+            }
         }
     }
-
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
+
     /**
      * Handles the HTTP <code>GET</code> method.
      *

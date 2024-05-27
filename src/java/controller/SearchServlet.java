@@ -5,7 +5,6 @@
  */
 package controller;
 
-import com.sun.org.apache.xpath.internal.operations.Variable;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.List;
@@ -35,6 +34,9 @@ public class SearchServlet extends HttpServlet {
             String search = request.getParameter("search");
             String searchType = request.getParameter("SearchBy");
             ProductDAO dao = new ProductDAO();
+            if (search == null) {
+                search = "";
+            }
             List<ProductDTO> listProduct = dao.getListProducts(search, searchType);
             if (!listProduct.isEmpty()) {
                 request.setAttribute("LIST_PRODUCT", listProduct);

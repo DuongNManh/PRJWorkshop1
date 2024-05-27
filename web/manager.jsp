@@ -28,12 +28,12 @@
             }
         %>
 
-        Welcome: <h1><%= loginUser.getFullName() %></h1>
+        Welcome: <h1><%= loginUser.getFullName()%></h1>
         <form action="MainController" method="POST">
             <input type="submit" name="action" value="Logout"/>
         </form>
         <form action="MainController" method="post">
-            Search <input type="text" name="search" value="<%= search %>"/>
+            Search <input type="text" name="search" value="<%= search%>"/>
             <select name="SearchBy">
                 <option value="ID">ID</option>
                 <option value="NAME">NAME</option>
@@ -45,28 +45,51 @@
                 <table border="1">
                     <thead>
                         <tr>
+                            <th>No</th>
                             <th>mobileID</th>
                             <th>mobileName</th>
                             <th>Price</th>
+                            <th>quantity</th>
                             <th>description</th>
                             <th>yearOfProduction</th>
+                            <th>notSale</th>
+
                         </tr>
                     </thead>
                     <tbody>
-                    <c:forEach var="product" items="${LIST_PRODUCT}">
-                        <tr>
+                        <%
+                            int count = 1;
+                        %>
+                        <c:forEach var="product" items="${LIST_PRODUCT}">
+                            <tr>
                         <form action="MainController" method="post">
-                            <td>${product.getMobileID()}</td>
-                            <td>${product.getMobileName()}</td>
-                            <td>${product.getPrice()}</td>
-                            <td>${product.getDescription()}</td>
-                            <td>${product.getYearOfProduction()}</td>
                             <td>
-                                <input type="hidden" name="sku" value="${product.getMobileID()}">
-                                <input type="submit" name="action" value="Update">
+                                <%= count++%>
+                            </td>
+                            <td>
+                                <input type="text" name="mobileID" value="${product.getMobileID()}" readonly="">
+                            </td>
+                            <td>
+                                <input type="text" name="mobileName" value="${product.getMobileName()}" readonly="">
+                            </td>
+                            <td>
+                                <input type="text" name="Price" value="${product.getPrice()}" required="">
+                            </td>
+                            <td>
+                                <input type="text" name="quantity" value="${product.getQuantity()}" required="">
+                            </td>
+                            <td>
+                                <input type="text" name="Description" value="${product.getDescription()}" required="">
+                            </td>
+                            <td>
+                                <input type="text" name="YearOfProduction" value="${product.getYearOfProduction()}" readonly="">
+                            </td>
+                            <td>
+                                <input type="text" name="notSale" value="${product.getNotSale()}" required="">
                             </td>
                             <td>
                                 <input type="hidden" name="sku" value="${product.getMobileID()}">
+                                <input type="submit" name="action" value="Update">
                                 <input type="submit" name="action" value="Delete">
                             </td>
                         </form>
@@ -77,6 +100,9 @@
             </form>
         </div>
         <div>
+            <c:if test="${not empty SUCCESS}">
+                <p>SUCCESS ${SUCCESS}</p>
+            </c:if>
             <c:if test="${not empty ERROR}">
                 <p>Error: ${ERROR}</p>
             </c:if>

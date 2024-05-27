@@ -219,6 +219,56 @@ public class ProductDAO {
         }
         return checkUpdate;
     }
+    
+    public boolean checkDuplicate(String mobileID) throws SQLException {
+        boolean check= false;
+        Connection conn= null;
+        PreparedStatement ptm= null;
+        ResultSet rs= null;
+        try {
+            conn= DBUtils.getConnection();
+            if(conn!= null){
+                ptm= conn.prepareStatement(CHECK_DUPLICATE);
+                ptm.setString(1, mobileID);
+                rs= ptm.executeQuery();
+                if(rs.next()){
+                    check= true;
+                }
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }finally{
+            if(rs!= null) rs.close();
+            if(ptm!= null) ptm.close();
+            if(conn!= null) conn.close();
+        }
+        return check;
+    }
+    
+    public boolean insertV2(ProductDTO product) throws ClassNotFoundException, SQLException {
+        boolean checkInsert= false;
+        Connection conn= null;
+        PreparedStatement ptm= null;
+             
+        try {
+            conn= DBUtils.getConnection();
+            if(conn!= null){
+                ptm= conn.prepareStatement(INSERT);
+                ptm.setString(1, product.getMobileID());
+                ptm.setString(2, product.getDescription());
+                ptm.setString(3, String.valueOf(product.getPrice()));
+                ptm.setString(4, product.getMobileName());
+                ptm.setString(5, String.valueOf(product.getYearOfProduction()));
+                ptm.setString(6, String.valueOf(product.getQuantity()));
+                ptm.setString(7, String.valueOf(product.getNotSale()));
+                checkInsert= ptm.executeUpdate()>0;
+            }
+        } finally{
+            if(ptm!= null) ptm.close();
+            if(conn!= null) conn.close();
+        }
+        return checkInsert;
+    }
 
     public static void main(String[] args) {
         System.out.println("List of Product");

@@ -160,7 +160,7 @@ public class ProductDAO {
         return list;
     }
 
-    public boolean delete(String userID) throws SQLException {
+    public boolean delete(String mobileID) throws SQLException {
         boolean checkDelete = false;
         Connection conn = null;
         PreparedStatement ptm = null;
@@ -168,7 +168,7 @@ public class ProductDAO {
             conn = DBUtils.getConnection();
             if (conn != null) {
                 ptm = conn.prepareStatement(DELETE);
-                ptm.setString(1, userID);
+                ptm.setString(1, mobileID);
                 checkDelete = ptm.executeUpdate() > 0;
             }
         } catch (Exception e) {

@@ -46,6 +46,10 @@ public class MainController extends HttpServlet {
     private static final String REMOVE_CONTROLLER = "RemoveServlet";
     private static final String PRODUCT = "ViewProduct";
     private static final String VIEW_PRODUCT = "ProductServlet";
+    private static final String INSERT_PAGE = "InsertPage";
+    private static final String GO_INSERT_PAGE = "GoToInsertPage";
+    private static final String INSERT = "Insert";
+    private static final String INSERT_CONTROLLER = "InsertServlet";
 
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
@@ -89,6 +93,12 @@ public class MainController extends HttpServlet {
                     break;
                 case PRODUCT:
                     url = VIEW_PRODUCT;
+                    break;
+                case INSERT_PAGE:
+                    url = GO_INSERT_PAGE;
+                    break;
+                case INSERT:
+                    url = INSERT_CONTROLLER;
                     break;
                 default:
                     request.setAttribute("ERROR", "Action is not supported");

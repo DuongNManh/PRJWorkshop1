@@ -31,6 +31,7 @@
         Welcome: <h1><%= loginUser.getFullName()%></h1>
         <form action="MainController" method="POST">
             <input type="submit" name="action" value="Logout"/>
+            <input type="submit" name="action" value="InsertPage">
         </form>
         <form action="MainController" method="post">
             Search <input type="text" name="search" value="<%= search%>"/>
@@ -101,7 +102,7 @@
         </div>
         <div>
             <c:if test="${not empty SUCCESS}">
-                <p>SUCCESS ${SUCCESS}</p>
+                <p>SUCCESS: ${SUCCESS}</p>
             </c:if>
             <c:if test="${not empty ERROR}">
                 <p>Error: ${ERROR}</p>

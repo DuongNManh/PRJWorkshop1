@@ -3,8 +3,14 @@
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group name="PRJ301">
-            <file>file:/D:/PRJ301/WorkShop1/src/java/product/ProductDTO.java</file>
+            <file>file:/D:/PRJ301/WorkShop1/src/java/controller/InsertServlet.java</file>
+            <file>file:/D:/PRJ301/WorkShop1/src/java/controller/UpdateServlet.java</file>
+            <file>file:/D:/PRJ301/WorkShop1/src/java/controller/DeleteServlet.java</file>
+            <file>file:/D:/PRJ301/WorkShop1/src/java/controller/MainController.java</file>
+            <file>file:/D:/PRJ301/WorkShop1/web/insert.jsp</file>
+            <file>file:/D:/PRJ301/WorkShop1/src/java/controller/GoToInsertPage.java</file>
             <file>file:/D:/PRJ301/WorkShop1/web/manager.jsp</file>
+            <file>file:/D:/PRJ301/WorkShop1/src/java/controller/SearchServlet.java</file>
             <file>file:/D:/PRJ301/WorkShop1/src/java/product/ProductDAO.java</file>
         </group>
     </open-files>

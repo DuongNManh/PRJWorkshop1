@@ -12,6 +12,8 @@
 <!DOCTYPE html>
 <html>
     <head>
+        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" 
+              integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
         <title>Admin Page</title>
     </head>
@@ -74,19 +76,19 @@
                                 <input type="text" name="mobileName" value="${product.getMobileName()}" readonly="">
                             </td>
                             <td>
-                                <input type="text" name="Price" value="${product.getPrice()}" required="">
+                                <input type="number" step="any" name="Price" value="${product.getPrice()}" required="" min="0">
                             </td>
                             <td>
-                                <input type="text" name="quantity" value="${product.getQuantity()}" required="">
+                                <input type="number" name="quantity" value="${product.getQuantity()}" required="" min="0">
                             </td>
                             <td>
                                 <input type="text" name="Description" value="${product.getDescription()}" required="">
                             </td>
                             <td>
-                                <input type="text" name="YearOfProduction" value="${product.getYearOfProduction()}" readonly="">
+                                <input type="number" name="YearOfProduction" value="${product.getYearOfProduction()}" readonly="" min="0">
                             </td>
                             <td>
-                                <input type="text" name="notSale" value="${product.getNotSale()}" required="">
+                                <input type="number" name="notSale" value="${product.getNotSale()}" required="" min="0">
                             </td>
                             <td>
                                 <input type="hidden" name="sku" value="${product.getMobileID()}">
@@ -108,6 +110,9 @@
                 <p>Error: ${ERROR}</p>
             </c:if>
         </div>
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" 
+                integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous">
+        </script>
     </body>
 </html>
 

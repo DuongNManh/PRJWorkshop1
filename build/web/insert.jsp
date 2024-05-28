@@ -10,8 +10,10 @@
 <!DOCTYPE html>
 <html>
     <head>
+        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" 
+              integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-        <title>JSP Insert</title>
+        <title>Product Insert Page</title>
     </head>
     <body>
         <%
@@ -21,7 +23,7 @@
                 return;
             }
         %>
-        
+
         Welcome: <h1><%= loginUser.getFullName()%></h1>
         <a href="./manager.jsp">back</a>
         <form action="MainController" method="post">
@@ -30,15 +32,15 @@
 
             <input type="text" name="mobileName" placeholder="mobileName" required="">
 
-            <input type="text" name="Price" placeholder="Price" required="">
+            <input type="number" step="any" name="Price" placeholder="Price" required="" min="0">
 
-            <input type="text" name="quantity" placeholder="quantity" required="">
+            <input type="number" name="quantity" placeholder="quantity" required="" min="0">
 
             <input type="text" name="Description" placeholder="Description" required="">
 
-            <input type="text" name="notSale" placeholder="notSale" required="">
+            <input type="number" name="notSale" placeholder="notSale" required="" min="0">
 
-            <input type="text" name="YearOfProduction" placeholder="YearOfProduction" required="">
+            <input type="number" name="YearOfProduction" placeholder="YearOfProduction" required="" min="0">
 
             <input type="submit" name="action" value="Insert">
         </form>
@@ -50,5 +52,8 @@
                 <p>Error: ${ERROR}</p>
             </c:if>
         </div>
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" 
+                integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous">
+        </script>
     </body>
 </html>

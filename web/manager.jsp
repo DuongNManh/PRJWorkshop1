@@ -13,11 +13,12 @@
               rel="stylesheet"
               integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC"
               crossorigin="anonymous">
+        <link rel="stylesheet" href="css/style.css"/>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
         <title>Admin Page</title>
     </head>
 
-    <body>
+    <body class="back">
         <% UserDTO loginUser = (UserDTO) session.getAttribute("LOGIN_USER");
             if (loginUser == null
                     || (loginUser.getRoleID() != 1)) {
@@ -48,9 +49,9 @@
             </div>
         </nav>
 
-        <div>
+        <div class="container-fluid table-responsive">
             <form action="MainController" method="post">
-                <table class="table table-striped table-hover table-bordered align-middle">
+                <table class="table table-striped table-hover table-bordered align-middle ">
                     <thead>
                         <tr class="table-info">
                             <th>No</th>

@@ -1,7 +1,6 @@
 <%-- 
     Document   : login
     Created on : May 10, 2024, 8:08:33 AM
-    Author     : Luu Minh Quan
 --%>
 
 <%@page contentType="text/html" pageEncoding="UTF-8"%>

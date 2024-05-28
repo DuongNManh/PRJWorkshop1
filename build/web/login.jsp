@@ -13,8 +13,13 @@
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
         <title>JSP Login</title>
     </head>
-    <body>
+    <body class="main-bg">
 
+        <div class="container">
+            <div class="row justify-content-center mt-5">
+
+            </div>
+        </div>
         <H1>
             LOGIN</H1>
         <form action="MainController" method="POST">
@@ -26,7 +31,7 @@
 
             <div>
                 <label>
-                    <p>Enter password: </p><input type="password" name="pass"placeholder="Password">
+                    <p>Enter password: </p><input type="password" name="pass" placeholder="Password">
                 </label> <br />
             </div>
             <input type="submit" name="action" value="Login"> <br />

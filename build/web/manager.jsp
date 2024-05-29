@@ -127,10 +127,14 @@
         </div>
         <div>
             <c:if test="${not empty SUCCESS}">
-                <p>SUCCESS: ${SUCCESS}</p>
+                <div class="alert alert-success" role="alert">
+                    SUCCESS: ${SUCCESS}
+                </div>
             </c:if>
             <c:if test="${not empty ERROR}">
-                <p>Error: ${ERROR}</p>
+                <div class="alert alert-danger" role="alert">
+                    Error: ${ERROR}
+                </div>
             </c:if>
         </div>
         <script

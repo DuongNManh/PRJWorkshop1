@@ -14,6 +14,10 @@ Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/CascadeStyleSheet.css
     animation: gradient 15s ease infinite;
 }
 
+.card {
+    background-color: rgba(255, 255, 255, 0.1); /* Semi-transparent white */
+}
+
 @keyframes gradient {
     0% {
         background-position: 0% 50%;

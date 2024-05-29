@@ -28,12 +28,12 @@
             }
             String min = request.getParameter("min");
             if (min == null) {
-                                    min = "";
-                                }
-                                String max = request.getParameter("max");
-                                if (max == null) {
-                                    max = "";
-                                }%>
+                min = "";
+            }
+            String max = request.getParameter("max");
+            if (max == null) {
+                max = "";
+            }%>
         <nav class="navbar navbar-expand-lg navbar-light bg-light">
             <div class="container-fluid">
                 <h2>
@@ -43,7 +43,7 @@
                     <form action="MainController" method="post">
                         <input type="number" step="any" name="min" min="0">
                         <input type="number" step="any" name="max" min="0">
-                        <button class="btn btn-outline-success" name="action"
+                        <button class="btn btn-success" name="action"
                                 value="ViewProduct">
                             Search
                         </button>
@@ -112,10 +112,22 @@
         </div>
 
         <% String message = (String) request.getAttribute("MESSAGE");
-                                    if (message == null) {
-                                        message = "";
-                                    }%>
-        <%= message%>
+            if (message == null) {
+                message = "";
+            }%>      
+
+        <% if (!message.isEmpty()) {
+        %>
+        <div class="alert alert-success" role="alert">
+            <%= message%>
+        </div>
+        <%
+            }
+        %>
+
+
+
+
     </body>
 
 </html>

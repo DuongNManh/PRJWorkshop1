@@ -30,8 +30,8 @@
                     <%= loginUser.getFullName()%>
                     <h2>Insert Product</h2>
                     <form action="MainController" method="post">
-                        <button class="btn btn-outline-success"><a
-                                href="./manager.jsp">back</a></button>
+                        <button class="btn btn-outline-success"><a style="text-decoration: none"
+                                href="./manager.jsp">Back</a></button>
                         <button class="btn btn-outline-danger" name="action" value="Logout"> LogOut
                         </button>
                     </form>
@@ -108,12 +108,12 @@
             
             <div>
                 <c:if test="${not empty SUCCESS}">
-                    <div class="alert alert-success" role="alert">
+                    <div class="alert alert-success mt-3" role="alert">
                         SUCCESS: ${SUCCESS}
                     </div>
                 </c:if>
                 <c:if test="${not empty ERROR}">
-                    <div class="alert alert-danger" role="alert">
+                    <div class="alert alert-danger mt-3" role="alert">
                         Error: ${ERROR}
                     </div>
                 </c:if>

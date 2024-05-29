@@ -27,7 +27,7 @@ public class ProductDAO {
     private static final String SEARCH_NAME = "SELECT * FROM MobileManagement.dbo.tbl_Mobile WHERE (mobileName like ?)";
     private static final String DELETE = "DELETE MobileManagement.dbo.tbl_Mobile WHERE (mobileID = ?)";
     private static final String UPDATE = "UPDATE MobileManagement.dbo.tbl_Mobile SET description=?, price=?,"
-            + " yearOfProduction=? , noSale=? WHERE mobileID=?";
+            + "quantity=?, yearOfProduction=? , noSale=? WHERE mobileID=?";
     private static final String CHECK_DUPLICATE = "SELECT mobileID FROM MobileManagement.dbo.tbl_Mobile WHERE mobileID=?  ";
     private static final String INSERT = "INSERT INTO tbl_Mobile (mobileId, description, price, mobileName, yearOfProduction, quantity, noSale) "
             + "                         VALUES(?,?,?,?,?,?,?)";
@@ -204,9 +204,10 @@ public class ProductDAO {
                 ptm = conn.prepareStatement(UPDATE);
                 ptm.setString(1, product.getDescription());
                 ptm.setFloat(2, product.getPrice());
-                ptm.setInt(3, product.getYearOfProduction());
-                ptm.setInt(4, product.getNotSale());
-                ptm.setString(5, product.getMobileID());
+                ptm.setInt(3, product.getQuantity());
+                ptm.setInt(4, product.getYearOfProduction());
+                ptm.setInt(5, product.getNotSale());
+                ptm.setString(6, product.getMobileID());
                 checkUpdate = ptm.executeUpdate() > 0;
             }
         } catch (Exception e) {

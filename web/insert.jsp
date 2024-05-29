@@ -37,56 +37,80 @@
         </nav>
 
 
-        <div class="container">
+        <div class="container pt-5">
             <form class="row gy-2 gx-3 align-items-center" action="MainController" method="post">
 
                 <div class="row g-3">
                     <div class="col-sm">
-                        <input type="text" name="mobileID" placeholder="mobileID" required="">
+                        <div class="form-floating">
+                            <input type="text" class="form-control" name="mobileID" placeholder="mobileID" required="">
+                            <label for="mobileID">Mobile ID</label>
+                        </div>
                     </div>
                     <div class="col-sm">
-                        <input type="text" name="mobileName" placeholder="mobileName" required="">
+                        <div class="form-floating">
+                            <input type="text" class="form-control" id="mobileName" name="mobileName" placeholder="mobileName" required="">
+                            <label for="mobileName">Mobile Name</label>
+                        </div>
                     </div>
                 </div>
 
                 <div class="row g-3">
                     <div class="col-sm-6">
-                        <input type="number" step="any" name="Price" placeholder="Price" required="" min="0">
+                        <div class="form-floating">
+                            <input type="number" step="any" class="form-control" id="Price" name="Price" placeholder="Price" required="" min="0">
+                            <label for="Price">Price</label>
+                        </div>
                     </div>
                     <div class="col-sm-6">
-                        <input type="number" name="quantity" placeholder="quantity" required="" min="0">
+                        <div class="form-floating">
+                            <input type="number" class="form-control" id="quantity" name="quantity" placeholder="quantity" required="" min="0">
+                            <label for="quantity">Quantity</label>
+                        </div>
                     </div>
                 </div>
 
                 <div class="row g-3">
                     <div class="col-sm">
-                        <input type="text" name="Description" placeholder="Description" required="">
+                        <div class="form-floating">
+                            <input type="text" class="form-control" id="Description" name="Description" placeholder="Description" required="">
+                            <label for="Description">Description</label>
+                        </div>
                     </div>
                     <div class="col-sm">
-                        <input type="number" name="notSale" placeholder="notSale" required="" min="0">
+                        <div class="form-floating">
+                            <input type="number" class="form-control" id="notSale" name="notSale" placeholder="notSale" required="" min="0">
+                            <label for="notSale">Not Sale</label>
+                        </div>
                     </div>
                     <div class="col-sm-3">
-                        <input type="number" name="YearOfProduction" placeholder="YearOfProduction" required=""
-                               min="0">
+                        <div class="form-floating">
+                            <input type="number" class="form-control" id="YearOfProduction" name="YearOfProduction" placeholder="YearOfProduction" required="" min="0">
+                            <label for="YearOfProduction">Year Of Production</label>     
+                        </div>
                     </div>
-                </div>
 
-                <input type="submit" name="action" value="Insert">
+                    <button class="btn btn-primary" type="submit" name="action" value="Insert">Submit form</button>
             </form>
             <div>
                 <c:if test="${not empty SUCCESS}">
-                    <p>SUCCESS: ${SUCCESS}</p>
+                    <div class="alert alert-success" role="alert">
+                        SUCCESS: ${SUCCESS}
+                    </div>
                 </c:if>
                 <c:if test="${not empty ERROR}">
-                    <p>Error: ${ERROR}</p>
+                    <div class="alert alert-danger" role="alert">
+                        Error: ${ERROR}
+                    </div>
                 </c:if>
             </div>
-        </div>        
+        </div>   
+    </div>
 
-        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"
-                integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM"
-                crossorigin="anonymous">
-        </script>
-    </body>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"
+            integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM"
+            crossorigin="anonymous">
+    </script>
+</body>
 
 </html>

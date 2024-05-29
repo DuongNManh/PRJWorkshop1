@@ -41,7 +41,9 @@ public class UpdateServlet extends HttpServlet {
                 String mobileName = request.getParameter("mobileName");
                 System.out.println("Updating product with mobileName: " + mobileName);
                 float Price = Float.parseFloat(request.getParameter("Price"));
+                System.out.println("Updating product with mobileName: " + Price);
                 int quantity = Integer.parseInt(request.getParameter("quantity"));
+                System.out.println("Updating product with mobileName: " + quantity);
                 String Description = request.getParameter("Description");
                 int notSale = Integer.parseInt(request.getParameter("notSale"));
                 int YearOfProduction = Integer.parseInt(request.getParameter("YearOfProduction"));

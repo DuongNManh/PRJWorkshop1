@@ -33,9 +33,9 @@
             <div class="container-fluid">
                 <h2>Welcome:    
                     <%= loginUser.getFullName()%>
-                </h2>
+                </h2>   
                 <form action="MainController" method="post">
-                    <input type="text" name="search" value="<%= search%>" placeholder="Search" />
+                    <input form-control" type="text" name="search" value="<%= search%>" placeholder="Search" />
                     <select name="SearchBy">
                         <option value="ID">ID</option>
                         <option value="NAME">NAME</option>
@@ -43,6 +43,7 @@
                     <button class="btn btn-success" name="action" value="Search"> Search </button>
                     <button class="btn btn-success" name="action" value="InsertPage"> Insert Product </button>
                 </form>
+
                 <form action="MainController" method="POST">
                     <button class="btn btn-danger" name="action" value="Logout"> LogOut </button>
                 </form>

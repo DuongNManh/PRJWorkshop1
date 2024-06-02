@@ -112,14 +112,24 @@
         </div>
 
         <% String message = (String) request.getAttribute("MESSAGE");
+            String error = (String) request.getAttribute("ERROR");
             if (message == null) {
                 message = "";
+            }
+            if (error == null) {
+                error = "";
             }%>      
 
         <% if (!message.isEmpty()) {
         %>
         <div class="alert alert-success" role="alert">
             <%= message%>
+        </div>
+        <%
+        } else if (!error.isEmpty()) {
+        %>
+        <div class="alert alert-warning" role="alert">
+            <%= error%>
         </div>
         <%
             }

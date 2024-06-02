@@ -20,211 +20,52 @@ import utils.DBUtils;
  *
  * @author hd
  */
-public class ProductDAO {
+public class CartDAO {
 
-    private static final String SEARCH = "SELECT * FROM MobileManagement.dbo.tbl_Mobile";
-    private static final String SEARCH_ID = "SELECT * FROM MobileManagement.dbo.tbl_Mobile WHERE (mobileID like ?)";
-    private static final String SEARCH_NAME = "SELECT * FROM MobileManagement.dbo.tbl_Mobile WHERE (mobileName like ?)";
-    private static final String DELETE = "DELETE MobileManagement.dbo.tbl_Mobile WHERE (mobileID = ?)";
-    private static final String UPDATE = "UPDATE MobileManagement.dbo.tbl_Mobile SET description=?, price=?,"
-            + "quantity=?, yearOfProduction=? , noSale=? WHERE mobileID=?";
-    private static final String CHECK_DUPLICATE = "SELECT mobileID FROM MobileManagement.dbo.tbl_Mobile WHERE mobileID=?  ";
-    private static final String INSERT = "INSERT INTO tbl_Mobile (mobileId, description, price, mobileName, yearOfProduction, quantity, noSale) "
-            + "                         VALUES(?,?,?,?,?,?,?)";
+    private static final String SEARCH = "SELECT m.mobileID, m.mobileName, m.price, up.quantity FROM user_product up JOIN tbl_Mobile m ON up.mobileID = m.mobileID WHERE up.userID = ?";
 
-    public List<ProductDTO> getListProducts(String search) throws SQLException {
-        List<ProductDTO> list = new ArrayList<>();
+    private static final String DELETE = "DELETE MobileManagement.dbo.user_product WHERE (userID= ? AND mobileID = ?)";
+    private static final String UPDATE = "UPDATE MobileManagement.dbo.user_product SET quantity=? WHERE (userID= ? AND mobileID = ?)";
+    private static final String CHECK_DUPLICATE = "SELECT * FROM MobileManagement.dbo.user_product WHERE (userID= ? AND mobileID = ?)";
+    private static final String INSERT = "INSERT INTO MobileManagement.dbo.user_product (userID, mobileID, quantity) VALUES(?,?,?)";
+
+    public void addToCart(CartDTO cart) throws SQLException {
         Connection conn = null;
         PreparedStatement ptm = null;
         ResultSet rs = null;
         try {
             conn = DBUtils.getConnection();
             if (conn != null) {
-                ptm = conn.prepareStatement(SEARCH);
-                rs = ptm.executeQuery();
-                while (rs.next()) {
-                    String mobileID = rs.getString("mobileID");
-                    String description = rs.getString("description");
-                    float price = rs.getFloat("price");
-                    String mobileName = rs.getString("mobileName");
-                    int yearOfProduction = rs.getInt("yearOfProduction");
-                    int Quantity = rs.getInt("Quantity");
-                    int notSale = rs.getInt("noSale");
-                    list.add(new ProductDTO(mobileID, description, price, mobileName, yearOfProduction,
-                            Quantity, notSale));
-                }
-
+                PreparedStatement stmt = conn.prepareStatement(INSERT);
+                stmt.setString(1, cart.getUserID());
+                stmt.setString(2, cart.getMobileID());
+                stmt.setInt(3, cart.getQuantity());
+                stmt.executeUpdate();
             }
         } catch (Exception e) {
-            e.printStackTrace();
-        } finally {
-            if (rs != null) {
-                rs.close();
-            }
-            if (ptm != null) {
-                ptm.close();
-            }
-            if (conn != null) {
-                conn.close();
-            }
+            System.out.println(e);
         }
-        return list;
+
     }
 
-    public List<ProductDTO> getListProducts(int min, int max) throws SQLException {
-        List<ProductDTO> list = new ArrayList<>();
-        Connection conn = null;
-        PreparedStatement ptm = null;
-        ResultSet rs = null;
-        try {
-            try {
-                conn = DBUtils.getConnection();
-                if (conn != null) {
-                    ptm = conn.prepareStatement(SEARCH);
-                    rs = ptm.executeQuery();
-                    while (rs.next()) {
-                        String mobileID = rs.getString("mobileID");
-                        String description = rs.getString("description");
-                        float price = rs.getFloat("price");
-                        String mobileName = rs.getString("mobileName");
-                        int yearOfProduction = rs.getInt("yearOfProduction");
-                        int Quantity = rs.getInt("Quantity");
-                        int notSale = rs.getInt("noSale");
-                        if (price >= min && price <= max) {
-                            list.add(new ProductDTO(mobileID, description, price, mobileName, yearOfProduction,
-                                    Quantity, notSale));
-                        }
-                    }
-                }
-            } catch (Exception e) {
-                e.printStackTrace();
-            } finally {
-                if (rs != null) {
-                    rs.close();
-                }
-                if (ptm != null) {
-                    ptm.close();
-                }
-                if (conn != null) {
-                    conn.close();
-                }
-            }
-        } catch (NumberFormatException e) {
-            e.printStackTrace();
-        }
-        return list;
-    }
-
-    public List<ProductDTO> getListProducts(String search, String searchType) throws SQLException {
-        List<ProductDTO> list = new ArrayList<>();
+    public void removeFromCart(CartDTO cart) throws SQLException {
         Connection conn = null;
         PreparedStatement ptm = null;
         ResultSet rs = null;
         try {
             conn = DBUtils.getConnection();
             if (conn != null) {
-                String sql;
-                if ("ID".equals(searchType)) {
-                    sql = SEARCH_ID;
-                } else {
-                    sql = SEARCH_NAME;
-                }
-                ptm = conn.prepareStatement(sql);
-                ptm.setString(1, "%" + search + "%");
-                rs = ptm.executeQuery();
-                while (rs.next()) {
-                    String mobileID = rs.getString("mobileID");
-                    String description = rs.getString("description");
-                    float price = rs.getFloat("price");
-                    String mobileName = rs.getString("mobileName");
-                    int yearOfProduction = rs.getInt("yearOfProduction");
-                    int Quantity = rs.getInt("Quantity");
-                    int notSale = rs.getInt("noSale");
-                    list.add(new ProductDTO(mobileID, description, price, mobileName, yearOfProduction,
-                            Quantity, notSale));
-                }
+                PreparedStatement stmt = conn.prepareStatement(DELETE);
+                stmt.setString(1, cart.getUserID());
+                stmt.setString(2, cart.getMobileID());
+                stmt.executeUpdate();
             }
         } catch (Exception e) {
-            e.printStackTrace();
-        } finally {
-            if (rs != null) {
-                rs.close();
-            }
-            if (ptm != null) {
-                ptm.close();
-            }
-            if (conn != null) {
-                conn.close();
-            }
+            System.out.println(e);
         }
-        return list;
     }
-
-    public boolean delete(String mobileID) throws SQLException {
-        boolean checkDelete = false;
-        Connection conn = null;
-        PreparedStatement ptm = null;
-        try {
-            conn = DBUtils.getConnection();
-            if (conn != null) {
-                ptm = conn.prepareStatement(DELETE);
-                ptm.setString(1, mobileID);
-                checkDelete = ptm.executeUpdate() > 0;
-            }
-        } catch (Exception e) {
-            // Log the exception
-            Logger.getLogger(getClass().getName()).log(Level.SEVERE, "Exception while deleting user", e);
-        } finally {
-            // Close resources
-            if (ptm != null) {
-                try {
-                    ptm.close();
-                } catch (SQLException e) {
-                    Logger.getLogger(getClass().getName()).log(Level.SEVERE, "Exception while closing PreparedStatement", e);
-                }
-            }
-            if (conn != null) {
-                try {
-                    conn.close();
-                } catch (SQLException e) {
-                    Logger.getLogger(getClass().getName()).log(Level.SEVERE, "Exception while closing Connection", e);
-                }
-            }
-        }
-        return checkDelete;
-    }
-
-    public boolean update(ProductDTO product) throws SQLException {
-        boolean checkUpdate = false;
-        Connection conn = null;
-        PreparedStatement ptm = null;
-        try {
-            conn = DBUtils.getConnection();
-            if (conn != null) {
-                ptm = conn.prepareStatement(UPDATE);
-                ptm.setString(1, product.getDescription());
-                ptm.setFloat(2, product.getPrice());
-                ptm.setInt(3, product.getQuantity());
-                ptm.setInt(4, product.getYearOfProduction());
-                ptm.setInt(5, product.getNotSale());
-                ptm.setString(6, product.getMobileID());
-                checkUpdate = ptm.executeUpdate() > 0;
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-        } finally {
-            if (ptm != null) {
-                ptm.close();
-            }
-            if (conn != null) {
-                conn.close();
-            }
-        }
-        return checkUpdate;
-    }
-
-    public boolean checkDuplicate(String mobileID) throws SQLException {
-        boolean check = false;
+    
+    public boolean checkDuplicate(CartDTO cart) throws SQLException{
         Connection conn = null;
         PreparedStatement ptm = null;
         ResultSet rs = null;
@@ -232,14 +73,15 @@ public class ProductDAO {
             conn = DBUtils.getConnection();
             if (conn != null) {
                 ptm = conn.prepareStatement(CHECK_DUPLICATE);
-                ptm.setString(1, mobileID);
+                ptm.setString(1, cart.getUserID());
+                ptm.setString(2, cart.getMobileID());
                 rs = ptm.executeQuery();
                 if (rs.next()) {
-                    check = true;
+                    return true;
                 }
             }
         } catch (Exception e) {
-            e.printStackTrace();
+            System.out.println(e);
         } finally {
             if (rs != null) {
                 rs.close();
@@ -251,28 +93,61 @@ public class ProductDAO {
                 conn.close();
             }
         }
-        return check;
+        return false;
     }
 
-    public boolean insertV2(ProductDTO product) throws ClassNotFoundException, SQLException {
-        boolean checkInsert = false;
+    public List<CartDTO> getCartDetails(String userID) throws SQLException {
+        List<CartDTO> cartDetails = new ArrayList<>();
         Connection conn = null;
-        PreparedStatement ptm = null;
 
         try {
             conn = DBUtils.getConnection();
             if (conn != null) {
-                ptm = conn.prepareStatement(INSERT);
-                ptm.setString(1, product.getMobileID());
-                ptm.setString(2, product.getDescription());
-                ptm.setString(3, String.valueOf(product.getPrice()));
-                ptm.setString(4, product.getMobileName());
-                ptm.setString(5, String.valueOf(product.getYearOfProduction()));
-                ptm.setString(6, String.valueOf(product.getQuantity()));
-                ptm.setString(7, String.valueOf(product.getNotSale()));
-                checkInsert = ptm.executeUpdate() > 0;
+                PreparedStatement stmt = conn.prepareStatement(SEARCH);
+                stmt.setString(1, userID);
+                ResultSet rs = stmt.executeQuery();
+                while (rs.next()) {
+                    CartDTO cart = new CartDTO();
+                    cart.setUserID(userID);
+                    cart.setMobileID(rs.getString("mobileID"));
+                    cart.setQuantity(rs.getInt("quantity"));
+                    // add product details to ProductDTO
+                    ProductDTO product = new ProductDTO();
+                    product.setMobileID(rs.getString("mobileID"));
+                    product.setMobileName(rs.getString("mobileName"));
+                    product.setPrice(rs.getFloat("price"));
+                    cart.setMobile(product);
+                    cartDetails.add(cart);
+                }
             }
+        } catch (Exception e) {
+            System.out.println(e);
+        }
+
+        return cartDetails;
+    }
+
+    public static void main(String[] args) throws SQLException {
+         Connection conn = null;
+        PreparedStatement ptm = null;
+        ResultSet rs = null;
+        try {
+            conn = DBUtils.getConnection();
+            if (conn != null) {
+                ptm = conn.prepareStatement(CHECK_DUPLICATE);
+                ptm.setString(1, "duong");
+                ptm.setString(2, "M001");
+                rs = ptm.executeQuery();
+                if (rs.next()) {
+                    System.out.println("true");
+                }
+            }
+        } catch (Exception e) {
+            System.out.println(e);
         } finally {
+            if (rs != null) {
+                rs.close();
+            }
             if (ptm != null) {
                 ptm.close();
             }
@@ -280,21 +155,8 @@ public class ProductDAO {
                 conn.close();
             }
         }
-        return checkInsert;
-    }
+        System.out.println("false");
 
-    public static void main(String[] args) {
-        System.out.println("List of Product");
-        ProductDAO dao = new ProductDAO();
-        List<ProductDTO> productList;
-        try {
-            productList = dao.getListProducts("");
-            for (ProductDTO productDTO : productList) {
-                System.out.println(productDTO.toString());
-            }
-        } catch (SQLException ex) {
-            Logger.getLogger(ProductServlet.class.getName()).log(Level.SEVERE, null, ex);
-        }
     }
 
 }

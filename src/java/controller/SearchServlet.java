@@ -13,8 +13,10 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 import product.ProductDAO;
 import product.ProductDTO;
+import user.UserDTO;
 
 /**
  *
@@ -25,10 +27,13 @@ public class SearchServlet extends HttpServlet {
 
     private static final String ERROR = "manager.jsp";
     private static final String SUCCESS = "manager.jsp";
+    private static final String US_SUCCESS = "user.jsp";
 
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
+        HttpSession session = request.getSession();
+        UserDTO loginUser = (UserDTO) session.getAttribute("LOGIN_USER");
         String url = ERROR;
         try {
             String search = request.getParameter("search");
@@ -40,7 +45,13 @@ public class SearchServlet extends HttpServlet {
             List<ProductDTO> listProduct = dao.getListProducts(search, searchType);
             if (!listProduct.isEmpty()) {
                 request.setAttribute("LIST_PRODUCT", listProduct);
-                url = SUCCESS;
+                switch (loginUser.getRoleID()) {
+                    case 1:
+                        url = SUCCESS;
+                        break;
+                    case 2:
+                        url = US_SUCCESS;
+                }              
             } else {
                 request.setAttribute("ERROR", "No products found");
             }

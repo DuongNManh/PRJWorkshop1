@@ -14,6 +14,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import product.*;
+import user.UserDTO;
 
 /**
  *
@@ -24,18 +25,22 @@ public class ChangeServlet extends HttpServlet {
 
     private static final String ERROR = "viewCart.jsp";
     private static final String SUCCESS = "viewCart.jsp";
-
+    private CartDAO cart;
+    
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
+        HttpSession session = request.getSession();
+        UserDTO loginUser = (UserDTO) session.getAttribute("LOGIN_USER");
         String url = ERROR;
         try {
             String id = request.getParameter("id");
             int newQuantity = Integer.parseInt(request.getParameter("quantity"));
             String descript = request.getParameter("descript");
-            HttpSession session = request.getSession();
-            CartDTO cart = (CartDTO) session.getAttribute("CART");
-            if (cart != null) {
+            CartDTO cartDTO = (CartDTO) cart.checkDuplicate(cart);
+            for (Object object : col) {
+                
+            }
                 if (cart.getCart().containsKey(id)) {
                     String name = cart.getCart().get(id).getMobileName();
                     float price = cart.getCart().get(id).getPrice();

@@ -17,7 +17,9 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
+import org.apache.catalina.User;
 import product.*;
+import user.UserDTO;
 
 /**
  *
@@ -27,11 +29,11 @@ import product.*;
 public class AddToCartServlet extends HttpServlet {
 
     private static final String ERROR = "user.jsp";
-    private static final String SUCCESS = "user.jsp";
+    private static final String SUCCESS = "SearchServlet";
 
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        
+
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
@@ -58,47 +60,28 @@ public class AddToCartServlet extends HttpServlet {
      * @throws IOException if an I/O error occurs
      */
     @Override
-    protected void doPost(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException {
-        response.setContentType("text/html;charset=UTF-8");
-        String url = ERROR;
-        try {
-            String id = request.getParameter("sku");
-            String name = null;
-            String decription = null;
-            float price = 0;
-            int nosale = 0;
-            int quantity = Integer.parseInt(request.getParameter("select"));
-            ProductDAO dao = new ProductDAO();
-            List<ProductDTO> productList;
-            productList = dao.getListProducts("");
-            request.setAttribute("products", productList);
-            for (ProductDTO item : productList) {
-                if (item.getMobileID().equals(id)) {
-                    name = item.getMobileName();
-                    decription = item.getDescription();
-                    price = item.getPrice();
-                    nosale = item.getNotSale();
-                }
-            }
-            
-            HttpSession session = request.getSession();
-            CartDTO cart = (CartDTO) session.getAttribute("CART");
-            if (cart == null) {
-                cart = new CartDTO();
-            }
-            boolean check = cart.add(new ProductDTO(id, decription, price, name, quantity, quantity, nosale));
-            if (check) {
-                session.setAttribute("CART", cart);
-                request.setAttribute("MESSAGE", "You added " + name + ". quantity: " + quantity);
-                url = SUCCESS;
-            }
+    protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        HttpSession session = request.getSession();
+        UserDTO loginUser = (UserDTO) session.getAttribute("LOGIN_USER");
+        String userID = loginUser.getUserID();
+        String productID = request.getParameter("sku");
+        int quantity = Integer.parseInt(request.getParameter("select"));
 
+        CartDTO cart = new CartDTO(userID, productID, quantity);
+        CartDAO cartDao = new CartDAO();
+        try {
+            if (!cartDao.checkDuplicate(cart)) {
+                cartDao.addToCart(cart);
+                request.setAttribute("MESSAGE", "Product added to cart successfully!");
+            } else {
+                request.setAttribute("ERROR", "Product already in cart!");
+            }
         } catch (Exception e) {
-            log("Error at AddToCartController: " + e.toString());
+            System.out.println(e);
         } finally {
-            request.getRequestDispatcher(url).forward(request, response);
+            request.getRequestDispatcher(SUCCESS).forward(request, response);
         }
+
     }
 
     /**

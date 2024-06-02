@@ -14,66 +14,65 @@ import java.util.Map;
  */
 public class CartDTO {
 
-    private Map<String, ProductDTO> cart;
+    private String userID;
+    private String mobileID;
+    private int quantity;
+    private ProductDTO mobile;
 
+    public String getUserID() {
+        return userID;
+    }
+
+    public void setUserID(String userID) {
+        this.userID = userID;
+    }
+
+    public String getMobileID() {
+        return mobileID;
+    }
+
+    public void setMobileID(String mobileID) {
+        this.mobileID = mobileID;
+    }
+
+    public int getQuantity() {
+        return quantity;
+    }
+
+    public void setQuantity(int quantity) {
+        this.quantity = quantity;
+    }
+
+    public ProductDTO getMobile() {
+        return mobile;
+    }
+
+    public void setMobile(ProductDTO mobile) {
+        this.mobile = mobile;
+    }
+    
+    
+    
     public CartDTO() {
     }
 
-    public CartDTO(Map<String, ProductDTO> cart) {
-        this.cart = cart;
+    public CartDTO(String userID, String mobileID, int quantity) {
+        this.userID = userID;
+        this.mobileID = mobileID;
+        this.quantity = quantity;
     }
 
-    public Map<String, ProductDTO> getCart() {
-        return cart;
+    public CartDTO(String userID, String mobileID, int quantity, ProductDTO mobile) {
+        this.userID = userID;
+        this.mobileID = mobileID;
+        this.quantity = quantity;
+        this.mobile = mobile;
     }
 
-    public void setCart(Map<String, ProductDTO> cart) {
-        this.cart = cart;
+    @Override
+    public String toString() {
+        return "CartDTO{" + "userID=" + userID + ", mobileID=" + mobileID + ", quantity=" + quantity + ", mobile=" + mobile + '}';
     }
-
-    public boolean add(ProductDTO product) {
-        boolean check = false;
-        try {
-            if (this.cart == null) {
-                this.cart = new HashMap<>();
-            }
-            if (this.cart.containsKey(product.getMobileID())) {
-                int currentQuantity = this.cart.get(product.getMobileID()).getQuantity();
-                product.setQuantity(currentQuantity + product.getQuantity());
-            }
-            this.cart.put(product.getMobileID(), product);
-            check = true;
-        } catch (Exception e) {
-        }
-
-        return check;
-    }
-
-    public boolean change(String id, ProductDTO product) {
-        boolean check = false;
-        try {
-            if (this.cart != null) {
-                if (this.cart.containsKey(id)) {
-                    this.cart.replace(id, product);
-                    check = true;
-                }
-            }
-        } catch (Exception e) {
-        }
-        return check;
-    }
-    public boolean remove(String id) {
-        boolean check = false;
-        try {
-            if (this.cart != null) {
-                if (this.cart.containsKey(id)) {
-                    this.cart.remove(id);
-                    check = true;
-                }
-            }
-        } catch (Exception e) {
-        }
-        return check;
-    }
-
+    
+    
 }

@@ -4,9 +4,11 @@
     Author     : hd
 --%>
 
+<%@page import="java.util.List"%>
 <%@page import="user.UserDTO"%>
 <%@page import="product.ProductDTO"%>
 <%@page import="product.CartDTO"%>
+<%@page import="product.CartDAO" %>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html>
@@ -25,8 +27,9 @@
                 response.sendRedirect("login.jsp");
                 return;
             }
-            CartDTO cart = (CartDTO) session.getAttribute("CART");
-            if (cart != null) {
+            String userID = (String) loginUser.getUserID();
+            CartDAO cartDAO = new CartDAO();
+            List<CartDTO> cartDetails = cartDAO.getCartDetails(userID);
         %>
 
         <nav class="navbar navbar-expand-lg navbar-light bg-light">
@@ -57,21 +60,21 @@
                     <%
                         int count = 1;
                         double total = 0;
-                        for (ProductDTO p : cart.getCart().values()) {
-                            total += p.getPrice() * p.getQuantity();
+                        for (CartDTO cart : cartDetails)  {
+                            total += cart.getMobile().getPrice() * cart.getQuantity();
                     %>
                 <form action="MainController" method="POST">
                     <tr>
                         <td><%= count++%></td>
-                        <td> <%= p.getMobileID()%>
-                            <input type="hidden" name="id" value="<%= p.getMobileID()%>" readonly=""/>
+                        <td> <%= cart.getMobileID()%>
+                            <input type="hidden" name="id" value="<%= cart.getMobileID()%>" readonly=""/>
                         </td>
-                        <td><%= p.getMobileName()%></td>
+                        <td><%= cart.getMobile().getMobileName()%></td>
                         <td>
-                            <input type="number" min="1" name="quantity" value="<%= p.getQuantity()%>" required=""/>
+                            <input type="number" min="1" name="quantity" value="<%= cart.getQuantity()%>" required=""/>
                         </td>
-                        <td><%= p.getPrice()%>$</td>
-                        <td><%= p.getPrice() * p.getQuantity()%>$</td>
+                        <td><%= cart.getMobile().getPrice()%>$</td>
+                        <td><%= cart.getMobile().getPrice() * cart.getQuantity()%>$</td>
                         <td>
                             <button class="btn btn-outline-primary" name="action" value="Change">
                                 Change
@@ -93,10 +96,6 @@
         <div class="alert alert-success" role="alert">
             <h3 class="text-center">Total: <%= total%>$  </h3> 
         </div>
-
-        <%
-            }
-        %>
         </br>
 
     </body>

@@ -14,37 +14,35 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import product.*;
+import user.UserDTO;
 
 /**
  *
  * @author hd
  */
 @WebServlet(name = "RemoveServlet", urlPatterns = {"/RemoveServlet"})
-public class RemoveController extends HttpServlet {
-
+public class RemoveServlet extends HttpServlet {
+    
     private static final String ERROR = "viewCart.jsp";
     private static final String SUCCESS = "viewCart.jsp";
-
+    private CartDAO cart = new CartDAO();
+    
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
         String url = ERROR;
+        HttpSession session = request.getSession();
+        UserDTO loginUser = (UserDTO) session.getAttribute("LOGIN_USER");
         try {
-            String id = request.getParameter("id");
-            HttpSession session = request.getSession();
-            CartDTO cart = (CartDTO) session.getAttribute("CART");
-            if (cart != null) {
-                if (cart.getCart().containsKey(id)) {
-                    boolean check = cart.remove(id);
-                    if (check) {
-                        if (cart.getCart().isEmpty()) {
-                            session.setAttribute("CART", null);
-                        } else {
-                            session.setAttribute("CART", cart);
-                        }
-                        url = SUCCESS;
-                    }
-                }
+            String userID = loginUser.getUserID();
+            String mobileID = request.getParameter("id");
+            int quantity = Integer.parseInt(request.getParameter("quantity"));
+            CartDTO rawCart = new CartDTO(userID, mobileID, quantity);
+            
+            if (cart.removeFromCart(rawCart)) {
+                request.setAttribute("SUCCESS", "Product remove successfully!");
+            } else {
+                request.setAttribute("FAIL", "Product remove fail!");
             }
         } catch (Exception e) {
             log("Error at AddToCartController: " + e.toString());

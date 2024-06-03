@@ -48,21 +48,25 @@ public class CartDAO {
 
     }
 
-    public void removeFromCart(CartDTO cart) throws SQLException {
+    public boolean removeFromCart(CartDTO cart) throws SQLException {
         Connection conn = null;
         PreparedStatement ptm = null;
-        ResultSet rs = null;
+        int rs;
         try {
             conn = DBUtils.getConnection();
             if (conn != null) {
                 PreparedStatement stmt = conn.prepareStatement(DELETE);
                 stmt.setString(1, cart.getUserID());
                 stmt.setString(2, cart.getMobileID());
-                stmt.executeUpdate();
+                rs = stmt.executeUpdate();
+                if (rs == 1) {
+                    return true;
+                }
             }
         } catch (Exception e) {
             System.out.println(e);
         }
+        return false;
     }
     
     public boolean checkDuplicate(CartDTO cart) throws SQLException{

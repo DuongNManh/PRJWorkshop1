@@ -9,27 +9,26 @@ Hello, my project to practice create java-web back-end here.
 
 **Building the web site using MVC2 in JavaEE allows some functions as**
 
-- Login with staff user, and user
+- Login with staff user, and user (done)
 
-**+ With staff,**
+**+ With staff,** 
+     - Search device with id or name or brand (half)
 
-     - Search device with id or name
+     - Delete mobile on data grid (done)
 
-     - Delete mobile on data grid
+     - Update price, description, quantity, and notSale of mobile on data grid (done)
 
-     - Update price, description, quantity, and notSale of mobile on data grid
+     - Insert new mobile into DB (done)
 
-     - Insert new mobile into DB
+**+ With user** 
 
-**+ With user**
+     - Search device with price in range [min, max] or brand (half)
 
-     - Search device with price in range [min, max]
+     - Add mobile to cart (done)
 
-     - Add mobile to cart
+     - View mobile cart and remove items (half)
 
-     - View mobile cart and remove items
+     - Store mobile to DB (student designs in his/her self) (half)
 
-     - Store mobile to DB (student designs in his/her self)
-
-**All of function should be validated**
+**All of function should be validated** 
 

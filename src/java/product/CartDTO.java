@@ -5,9 +5,6 @@
  */
 package product;
 
-import java.util.HashMap;
-import java.util.Map;
-
 /**
  *
  * @author hd

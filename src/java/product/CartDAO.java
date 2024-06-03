@@ -126,6 +126,35 @@ public class CartDAO {
 
         return cartDetails;
     }
+    
+    public boolean update(CartDTO cart) throws SQLException{
+        Connection conn = null;
+        PreparedStatement ptm = null;
+        int rs = 0;
+        try {
+            conn = DBUtils.getConnection();
+            if (conn != null) {
+                ptm = conn.prepareStatement(UPDATE);
+                ptm.setInt(1, cart.getQuantity());
+                ptm.setString(2, cart.getUserID());
+                ptm.setString(3, cart.getMobileID());
+                rs = ptm.executeUpdate();
+                if (rs == 1) {
+                    return true;
+                }
+            }
+        } catch (Exception e) {
+            System.out.println(e);
+        } finally {
+            if (ptm != null) {
+                ptm.close();
+            }
+            if (conn != null) {
+                conn.close();
+            }
+        }
+        return false;
+    }
 
     public static void main(String[] args) throws SQLException {
          Connection conn = null;

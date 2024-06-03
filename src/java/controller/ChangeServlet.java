@@ -25,8 +25,8 @@ public class ChangeServlet extends HttpServlet {
 
     private static final String ERROR = "viewCart.jsp";
     private static final String SUCCESS = "viewCart.jsp";
-    private CartDAO cart;
-    
+    private CartDAO cart = new CartDAO();
+
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
@@ -34,25 +34,14 @@ public class ChangeServlet extends HttpServlet {
         UserDTO loginUser = (UserDTO) session.getAttribute("LOGIN_USER");
         String url = ERROR;
         try {
-            String id = request.getParameter("id");
+            String userID = loginUser.getUserID();
+            String mobileID = request.getParameter("id");
             int newQuantity = Integer.parseInt(request.getParameter("quantity"));
-            String descript = request.getParameter("descript");
-            CartDTO cartDTO = (CartDTO) cart.checkDuplicate(cart);
-            for (Object object : col) {
-                
-            }
-                if (cart.getCart().containsKey(id)) {
-                    String name = cart.getCart().get(id).getMobileName();
-                    float price = cart.getCart().get(id).getPrice();
-                    int noSale = cart.getCart().get(id).getNotSale();
-                    int year = cart.getCart().get(id).getYearOfProduction();
-                    ProductDTO product = new ProductDTO(id, descript, price, name, year, newQuantity, noSale);
-                    boolean check = cart.change(id, product);
-                    if (check) {
-                        session.setAttribute("CART", cart);
-                        url = SUCCESS;
-                    }
-                }
+            CartDTO rawCart = new CartDTO(userID, mobileID, newQuantity);
+            if (cart.update(rawCart)) {
+                request.setAttribute("SUCCESS", "Product quantity updated!");
+            } else {
+                request.setAttribute("FAIL", "Product quantity updated!");
             }
         } catch (Exception e) {
             log("Error at AddToCartController: " + e.toString());

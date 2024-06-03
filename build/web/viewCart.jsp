@@ -60,7 +60,7 @@
                     <%
                         int count = 1;
                         double total = 0;
-                        for (CartDTO cart : cartDetails)  {
+                        for (CartDTO cart : cartDetails) {
                             total += cart.getMobile().getPrice() * cart.getQuantity();
                     %>
                 <form action="MainController" method="POST">
@@ -93,6 +93,29 @@
                 </tbody>
             </table>
         </div>
+        <% String message = (String) request.getAttribute("SUCCESS");
+            String error = (String) request.getAttribute("FAIL");
+            if (message == null) {
+                message = "";
+            }
+            if (error == null) {
+                error = "";
+                    }%>      
+
+        <% if (!message.isEmpty()) {
+        %>
+        <div class="alert alert-success" role="alert">
+            <%= message%>
+        </div>
+        <%
+        } else if (!error.isEmpty()) {
+        %>
+        <div class="alert alert-warning" role="alert">
+            <%= error%>
+        </div>
+        <%
+            }
+        %>
         <div class="alert alert-success" role="alert">
             <h3 class="text-center">Total: <%= total%>$  </h3> 
         </div>
